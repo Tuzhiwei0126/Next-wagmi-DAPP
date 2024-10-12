@@ -1,120 +1,128 @@
+'use client';
+import {
+  CryptoInput,
+  type CryptoInputProps,
+  type Token,
+} from '@ant-design/web3';
 
-'use client'
 import React, { useEffect, useState } from 'react';
-import { 
+import { parseEther } from 'viem';
+import {
+  useSendTransaction,
+  useWaitForTransactionReceipt,
   type BaseError,
-  useSendTransaction, 
-  useWaitForTransactionReceipt 
-} from 'wagmi' 
-import { parseEther } from 'viem' 
-import { CryptoInput, type CryptoInputProps, type Token } from '@ant-design/web3';
-import { ETH, USDT } from '@ant-design/web3-assets/tokens';
+} from 'wagmi';
 
 import { CryptoPrice } from '@ant-design/web3';
-import { config } from "../../config";
-import { getAccount } from "@wagmi/core";
-import { useBalance } from "wagmi";
+import { ETH, USDT } from '@ant-design/web3-assets/tokens';
+import { getAccount } from '@wagmi/core';
+import { useBalance } from 'wagmi';
+import { config } from '../../config';
 export function SendTransaction() {
-    const [ETHPRice ,setETHPRice] = useState();
-  const { 
+  console.log(USDT, 'USDTUSDT');
+
+  const [ETHPRice, setETHPRice] = useState();
+  const {
     data: hash,
     error,
-    isPending, 
-    sendTransaction 
-  } = useSendTransaction() 
+    isPending,
+    sendTransaction,
+  } = useSendTransaction();
 
-  const USDT_CONTRACT = '0xdAC17F958D2ee523a2206206994597C13D831ec7'
-  
-  const ETH_CONTRACT = '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
+  const USDT_CONTRACT = '0xdAC17F958D2ee523a2206206994597C13D831ec7';
+
+  const ETH_CONTRACT = '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2';
   const account = getAccount(config);
   const balance = useBalance({
-    address:account.address,
-    config
-  })
-  const getETHPrice = (type)=>{
-    const options = {method: 'GET', headers: {'x-api-key': '2nKxVJ2feS2ZUYc8ajB7cSBqu4Y'}};
-    fetch(`https://api.chainbase.online/v1/token/price?chain_id=1&contract_address=${type!=='ETH'?ETH_CONTRACT:USDT_CONTRACT}`, options)
-      .then(response => response.json())
-      .then(response => {
-        response.data
-        console.log(response.data.price,'111')
-        setETHPRice(response?.data?.price)
+    address: account.address,
+    config,
+  });
+  const getETHPrice = (type) => {
+    const options = {
+      method: 'GET',
+      headers: { 'x-api-key': '2nKxVJ2feS2ZUYc8ajB7cSBqu4Y' },
+    };
+    fetch(
+      `https://api.chainbase.online/v1/token/price?chain_id=1&contract_address=${type !== 'ETH' ? ETH_CONTRACT : USDT_CONTRACT}`,
+      options
+    )
+      .then((response) => response.json())
+      .then((response) => {
+        response.data;
+        console.log(response.data.price, '111');
+        setETHPRice(response?.data?.price);
       })
-      .catch(err => console.error(err));
+      .catch((err) => console.error(err));
+  };
+
+  console.log(account, 'accountaccount');
+
+  console.log(balance?.data?.value, 'balance');
+
+  async function submit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    const formData = new FormData(e.target as HTMLFormElement);
+    const to = formData.get('address') as `0x${string}`;
+    const value = formData.get('value') as string;
+    sendTransaction({ to, value: parseEther(value) });
   }
 
-  console.log(account,"accountaccount");
-  
-  
-  console.log(balance?.data?.value,'balance');
+  const { isLoading: isConfirming, isSuccess: isConfirmed } =
+    useWaitForTransactionReceipt({
+      hash,
+    });
+  const [crypto, setCrypto] = useState<CryptoInputProps['value']>();
 
-  async function submit(e: React.FormEvent<HTMLFormElement>) { 
-    e.preventDefault() 
-    const formData = new FormData(e.target as HTMLFormElement) 
-    const to = formData.get('address') as `0x${string}` 
-    const value = formData.get('value') as string 
-    sendTransaction({ to, value: parseEther(value) }) 
-  } 
+  const [tokenBalance, setTokenBalance] =
+    useState<CryptoInputProps['balance']>();
 
-  const { isLoading: isConfirming, isSuccess: isConfirmed } = 
-    useWaitForTransactionReceipt({ 
-      hash, 
-    }) 
-    const [crypto, setCrypto] = useState<CryptoInputProps['value']>();
+  const handleQueryCrypto = async (token?: Token) => {
+    if (!token) {
+      return setTokenBalance(undefined);
+    }
 
-    const [tokenBalance, setTokenBalance] = useState<CryptoInputProps['balance']>();
-  
-    const handleQueryCrypto = async (token?: Token) => {
-      if (!token) {
-        return setTokenBalance(undefined);
-      }
-  
-      // mock query token balance
-      setTimeout(() => {
-     
-        setTokenBalance({
-          amount: balance?.data?.value,
-          unit: '$',
-          price: ETHPRice,
-        });
-      }, 500);
-    };
-    useEffect(()=>{
-        getETHPrice('ETH')
-    },[])
+    // mock query token balance
+    setTimeout(() => {
+      setTokenBalance({
+        amount: balance?.data?.value,
+        unit: '$',
+        price: ETHPRice,
+      });
+    }, 500);
+  };
+  useEffect(() => {
+    getETHPrice('ETH');
+  }, []);
 
   return (
     <form onSubmit={submit}>
-    <div style={{ width: 456 }}>
-      <CryptoInput
-        value={crypto}
-        balance={tokenBalance}
-        onChange={(value) => {
-          console.log(value?.token?.symbol,'value?.token?.symbol');
-          setCrypto(value);
-          getETHPrice(value?.token?.symbol)
-          if (value?.token?.symbol !== crypto?.token?.symbol) {
-            handleQueryCrypto(value?.token);
-          }
-        }}
-        options={[ETH, USDT]}
-      />
-    </div>
-     <CryptoPrice value={balance?.data?.value} />;
+      <div style={{ width: 456 }}>
+        <CryptoInput
+          value={crypto}
+          balance={tokenBalance}
+          onChange={(value) => {
+            console.log(value?.token?.symbol, 'value?.token?.symbol');
+            setCrypto(value);
+            getETHPrice(value?.token?.symbol);
+            if (value?.token?.symbol !== crypto?.token?.symbol) {
+              handleQueryCrypto(value?.token);
+            }
+          }}
+          options={[ETH, USDT]}
+        />
+      </div>
+      <CryptoPrice value={balance?.data?.value} />;
       <input name="address" placeholder="0xA0Cf…251e" required />
       <input name="value" placeholder="0.05" required />
-      <button 
-        disabled={isPending} 
-        type="submit"
-      >
-        {isPending ? 'Confirming...' : 'Send'} 
+      <button disabled={isPending} type="submit">
+        {isPending ? 'Confirming...' : 'Send'}
       </button>
-      {hash && <div>Transaction Hash: {hash}</div>} 
-      {isConfirming && <div>Waiting for confirmation...</div>} 
-      {isConfirmed && <div>Transaction confirmed.</div>} 
+      {hash && <div>Transaction Hash: {hash}</div>}
+      {isConfirming && <div>Waiting for confirmation...</div>}
+      {isConfirmed && <div>Transaction confirmed.</div>}
       {error && (
         <div>Error: {(error as BaseError).shortMessage || error.message}</div>
       )}
     </form>
-  )
+  );
 }

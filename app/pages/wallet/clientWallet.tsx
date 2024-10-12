@@ -1,46 +1,50 @@
-'use client'
+'use client';
 
-import React, { useState } from 'react'
-import type { Account, ConnectorTriggerProps } from '@ant-design/web3'
-import { Connector, ConnectButton, type Chain  } from '@ant-design/web3'
-import { RainbowButton } from '../../../components/ui/rainbow-button'
-import { PayPanel } from '@ant-design/web3'
+import type { ConnectorTriggerProps } from '@ant-design/web3';
+import {
+  ConnectButton,
+  Connector,
+  PayPanel,
+  type Chain,
+} from '@ant-design/web3';
 import {
   BSC,
-  Polygon,
   Mainnet,
-  metadata_imToken,
+  Polygon,
+  USDT,
   metadata_MetaMask,
   metadata_TokenPocket,
-  USDT,
-} from '@ant-design/web3-assets'
-import { Modal } from 'antd'
-import { parseUnits } from 'viem'
+  metadata_imToken,
+} from '@ant-design/web3-assets';
+import { Modal } from 'antd';
+import React, { useState } from 'react';
+import { parseUnits } from 'viem';
+import { RainbowButton } from '../../../components/ui/rainbow-button';
 export function RainbowButtonDemo() {
-  return <RainbowButton>Get Unlimited Access</RainbowButton>
+  return <RainbowButton>Get Unlimited Access</RainbowButton>;
 }
 
 const CustomTrigger: React.FC<ConnectorTriggerProps> = (props) => {
-  const { loading, onConnectClick, account } = props
+  const { loading, onConnectClick, account } = props;
   return (
     <h1 onClick={() => onConnectClick?.()}>
       9999
       {loading ? 'Connecting...' : account?.address || 'Connect Your Wallet'}
     </h1>
-  )
-}
+  );
+};
 
 const ConnectCom: React.FC = () => {
-  const [chain, setChain] = React.useState<Chain>(Polygon)
-  const [open, setOpen] = useState(false)
+  const [chain, setChain] = React.useState<Chain>(Polygon);
+  const [open, setOpen] = useState(false);
 
   const showModal = () => {
-    setOpen(true)
-  }
+    setOpen(true);
+  };
 
   const hideModal = () => {
-    setOpen(false)
-  }
+    setOpen(false);
+  };
   return (
     <>
       <Modal open={open} footer={null} width={450} onCancel={hideModal}>
@@ -54,8 +58,8 @@ const ConnectCom: React.FC = () => {
           amount={parseUnits('1', USDT.decimal)}
           wallets={[metadata_MetaMask, metadata_imToken, metadata_TokenPocket]}
           onFinish={() => {
-            hideModal()
-            console.log('complete')
+            hideModal();
+            console.log('complete');
           }}
         />
       </Modal>
@@ -65,12 +69,11 @@ const ConnectCom: React.FC = () => {
         </RainbowButton>
       </div>
       <div>
-    
         <Connector>
-        <ConnectButton />
+          <ConnectButton />
         </Connector>
       </div>
     </>
-  )
-}
-export default ConnectCom
+  );
+};
+export default ConnectCom;
