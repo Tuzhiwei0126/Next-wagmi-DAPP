@@ -122,3 +122,11 @@ body {
   height: 30px;
   background: #46599b;
 }
+.CryptoInput_class {
+  width: 40rem;
+}
+.MagicCard_box {
+  gap: 10rem;
+
+  margin-bottom: 10rem;
+}

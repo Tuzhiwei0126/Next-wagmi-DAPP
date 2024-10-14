@@ -20,9 +20,9 @@ import {
   WalletConnect,
 } from '@ant-design/web3-wagmi';
 // import { parseEther } from "viem"
-import { config } from './config';
-
+import { AntdRegistry } from '@ant-design/nextjs-registry';
 import { getAccount } from '@wagmi/core';
+import { config } from './config';
 
 const geistSans = localFont({
   src: './fonts/GeistVF.woff',
@@ -69,7 +69,7 @@ export default function RootLayout({
             <div>
               <Navbar />
               <div className="next_main relative flex h-[100vh] w-full flex-col items-center justify-center overflow-hidden rounded-lg border bg-background md:shadow-xl">
-                {children}
+                <AntdRegistry>{children}</AntdRegistry>
               </div>
             </div>
           </QueryClientProvider>

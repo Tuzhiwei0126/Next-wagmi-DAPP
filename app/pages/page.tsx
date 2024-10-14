@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 import Particles from '../../components/ui/particles';
 import { SendTransaction } from '../pages/Transaction/Transaction';
 
+import { MagicCard } from '../../components/ui/magic-card';
 export default function ParticlesDemo() {
   const { theme } = useTheme();
   const [color, setColor] = useState('#ffffff');
@@ -23,7 +24,30 @@ export default function ParticlesDemo() {
         color={color}
         refresh
       />
-      <SendTransaction />
+      <div>
+        <div>
+          <div className={'MagicCard_box full flex'}>
+            <MagicCard
+              gradientSize={300}
+              className="full cursor-pointer whitespace-nowrap p-8 text-4xl shadow-2xl"
+              gradientColor={
+                theme === 'dark' ? 'rgb(255, 153, 102)' : 'rgb(255, 153, 102)'
+              }
+            >
+              <SendTransaction />
+            </MagicCard>
+            <MagicCard
+              className="full cursor-pointer whitespace-nowrap p-8 text-4xl shadow-2xl"
+              gradientColor={
+                theme === 'dark' ? 'rgb(78, 84, 200)' : 'rgb(78, 84, 200)'
+              }
+              gradientSize={300}
+            >
+              <SendTransaction />
+            </MagicCard>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

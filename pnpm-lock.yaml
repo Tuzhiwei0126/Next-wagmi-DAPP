@@ -5,6 +5,9 @@ settings:
   excludeLinksFromLockfile: false
 
 dependencies:
+  '@ant-design/nextjs-registry':
+    specifier: ^1.0.1
+    version: 1.0.1(@ant-design/cssinjs@1.21.1)(antd@5.21.3)(next@14.2.15)(react-dom@18.0.0)(react@18.0.0)
   '@ant-design/web3':
     specifier: ^1.16.3
     version: 1.16.3(antd@5.21.3)(react-dom@18.0.0)(react@18.0.0)
@@ -20,6 +23,9 @@ dependencies:
   '@tanstack/react-query':
     specifier: ^5.55.4
     version: 5.55.4(react@18.0.0)
+  antd:
+    specifier: ^5.21.3
+    version: 5.21.3(react-dom@18.0.0)(react@18.0.0)
   class-variance-authority:
     specifier: ^0.7.0
     version: 0.7.0
@@ -35,6 +41,9 @@ dependencies:
   lucide-react:
     specifier: ^0.451.0
     version: 0.451.0(react@18.0.0)
+  mini-svg-data-uri:
+    specifier: ^1.4.4
+    version: 1.4.4
   next:
     specifier: 14.2.15
     version: 14.2.15(@babel/core@7.25.8)(react-dom@18.0.0)(react@18.0.0)
@@ -176,6 +185,22 @@ packages:
       '@babel/runtime': 7.25.7
       classnames: 2.5.1
       rc-util: 5.43.0(react-dom@18.0.0)(react@18.0.0)
+      react: 18.0.0
+      react-dom: 18.0.0(react@18.0.0)
+    dev: false
+
+  /@ant-design/nextjs-registry@1.0.1(@ant-design/cssinjs@1.21.1)(antd@5.21.3)(next@14.2.15)(react-dom@18.0.0)(react@18.0.0):
+    resolution: {integrity: sha512-DaMJ1nClR1a4UfG7vXkDj89z1eARhSDgqvHoxfM0Yco1MZEbaqRj4o+bQToHb3gMb6gbFlrZ51nOBGh5xSJ7EQ==}
+    peerDependencies:
+      '@ant-design/cssinjs': ^1.18.2
+      antd: ^5.0.0
+      next: ^14.0.0
+      react: '>=16.0.0'
+      react-dom: '>=16.0.0'
+    dependencies:
+      '@ant-design/cssinjs': 1.21.1(react-dom@18.0.0)(react@18.0.0)
+      antd: 5.21.3(react-dom@18.0.0)(react@18.0.0)
+      next: 14.2.15(@babel/core@7.25.8)(react-dom@18.0.0)(react@18.0.0)
       react: 18.0.0
       react-dom: 18.0.0(react@18.0.0)
     dev: false
@@ -6486,7 +6511,7 @@ packages:
     dev: true
 
   /isobject@3.0.1:
-    resolution: {integrity: sha512-WhB9zCku7EGTj/HQQRz5aUQEUeoQZH2bWcltRErOpymJ4boYE6wL9Tbr23krRPSZ+C5zqNSrSw+Cc7sZZ4b7vg==}
+    resolution: {integrity: sha1-TkMekrEalzFjaqH5yNHMvP2reN8=}
     engines: {node: '>=0.10.0'}
     dev: false
 
@@ -7262,6 +7287,11 @@ packages:
   /mimic-fn@4.0.0:
     resolution: {integrity: sha512-vqiC06CuhBTUdZH+RYl8sFrL096vA45Ok5ISO6sE/Mr1jRbGH4Csnhi8f3wKVl7x8mO4Au7Ir9D3Oyv1VYMFJw==}
     engines: {node: '>=12'}
+    dev: false
+
+  /mini-svg-data-uri@1.4.4:
+    resolution: {integrity: sha512-r9deDe9p5FJUPZAk3A59wGH7Ii9YrjjWw0jmw/liSbHl2CHiyXj6FcDXDu2K3TjVAXqiJdaw3xxwlZZr9E6nHg==}
+    hasBin: true
     dev: false
 
   /minimalistic-assert@1.0.1:
