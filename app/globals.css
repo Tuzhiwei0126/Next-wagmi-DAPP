@@ -100,10 +100,18 @@ body {
 .header_box {
   display: flex;
   justify-content: space-between;
-  padding: 0 6rem;
+  padding: 0 5rem;
 }
 .next_ntf_box {
-  top: 80px;
+  top: 100px;
+}
+.pice_gas {
+  margin: 0 1rem;
+}
+.nav_header_text {
+  /* position: fixed; */
+  /* margin-top: 80px; */
+  border: none;
 }
 .ant-web3-nft-card-inner {
   padding: 0px !important;

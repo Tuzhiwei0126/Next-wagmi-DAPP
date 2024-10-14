@@ -19,8 +19,6 @@ import { getAccount } from '@wagmi/core';
 import { useBalance } from 'wagmi';
 import { config } from '../../config';
 export function SendTransaction() {
-  console.log(USDT, 'USDTUSDT');
-
   const [ETHPRice, setETHPRice] = useState();
   const {
     data: hash,
@@ -49,15 +47,14 @@ export function SendTransaction() {
       .then((response) => response.json())
       .then((response) => {
         response.data;
-        console.log(response.data.price, '111');
         setETHPRice(response?.data?.price);
       })
       .catch((err) => console.error(err));
   };
 
-  console.log(account, 'accountaccount');
+  // console.log(account, 'accountaccount');
 
-  console.log(balance?.data?.value, 'balance');
+  // console.log(balance?.data?.value, 'balance');
 
   async function submit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -100,6 +97,7 @@ export function SendTransaction() {
         <CryptoInput
           value={crypto}
           balance={tokenBalance}
+          header={'输入Token数量'}
           onChange={(value) => {
             console.log(value?.token?.symbol, 'value?.token?.symbol');
             setCrypto(value);
