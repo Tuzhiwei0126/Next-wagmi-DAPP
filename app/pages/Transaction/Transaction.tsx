@@ -1,22 +1,23 @@
 'use client';
 
 import type { CryptoInputProps } from '@ant-design/web3';
-import { CryptoInput } from '@ant-design/web3';
-import { Form } from 'antd';
-import { config } from '../../config';
-
+import { Address, CryptoInput } from '@ant-design/web3';
 import { ETH, USDT } from '@ant-design/web3-wagmi';
 import { getAccount } from '@wagmi/core';
+import { Form } from 'antd';
 import TextArea from 'antd/es/input/TextArea';
 import React, { useEffect, useState } from 'react';
 import { parseEther } from 'viem';
 import {
+  BaseError,
   useBalance,
+  useEstimateFeesPerGas,
   useSendTransaction,
   useWaitForTransactionReceipt,
 } from 'wagmi';
+import { config } from '../../config';
 
-import { RainbowButton } from '../../../components/ui/rainbow-button';
+import { Button } from 'antd';
 import TypingAnimation from '../../../components/ui/typing-animation';
 
 const USDT_CONTRACT = '0xdAC17F958D2ee523a2206206994597C13D831ec7';
@@ -136,27 +137,6 @@ const AmountInput = (props) => {
     </span>
   );
 };
-const SubmitButton = ({ form, children }) => {
-  const [submittable, setSubmittable] = React.useState(false);
-
-  // Watch all values
-  const values = Form.useWatch([], form);
-  React.useEffect(() => {
-    console.log(values, '123123');
-
-    form
-      .validateFields({
-        validateOnly: true,
-      })
-      .then(() => setSubmittable(true))
-      .catch(() => setSubmittable(false));
-  }, [form, values]);
-  return (
-    <RainbowButton className="CryptoInput_class" disabled={!submittable}>
-      Tranfor
-    </RainbowButton>
-  );
-};
 
 export function SendTransaction() {
   const {
@@ -169,40 +149,32 @@ export function SendTransaction() {
   // console.log(account, 'accountaccount');
   // console.log(balance?.data?.value, 'balance');
 
-  async function submit(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-    console.log(e.target, 'e.target');
-
-    const formData = new FormData(e.target as HTMLFormElement);
-    const to = formData.get('address') as `0x${string}`;
-    const value = formData.get('value') as string;
-    sendTransaction({ to, value: parseEther(value) });
-  }
-
   const { isLoading: isConfirming, isSuccess: isConfirmed } =
     useWaitForTransactionReceipt({
       hash,
     });
+  const { data } = useEstimateFeesPerGas({
+    config,
+    formatUnits: 'gwei',
+  });
+  // console.log(formatUnits(result.data?.formatted?.maxFeePerBlobGas, 6), 322);
+  console.log(data?.formatted.maxFeePerGas, 322);
+
   const [submittable, setSubmittable] = React.useState(false);
 
   const onFinish = (values) => {
+    const to = '0xF663331cDBA5585CDd0191da5F85b7c490C47304';
+    const value = values.crypto.crypto;
+    sendTransaction({ to, values: parseEther('11') });
+    console.log(values, 122);
     console.log('Received values from form: ', values);
   };
-  const checkPrice = (value) => {
-    console.log(value, 122);
-
-    if (value.number as `0x${string}`) {
-      return Promise.resolve();
-    }
-    return Promise.reject(new Error('请输入ox地址!'));
-  };
   const [form] = Form.useForm();
-
+  useEffect(() => {}, []);
   return (
     <>
       <Form
         form={form}
-        cl
         layout="vertical"
         autoComplete="off"
         name="validateOnly"
@@ -233,23 +205,41 @@ export function SendTransaction() {
         </Form.Item>
 
         <Form.Item>
-          <SubmitButton form={form}>Submit</SubmitButton>
+          <div>
+            预估最大gas: {Number(data?.formatted.maxFeePerGas).toFixed(1)} gwei
+          </div>
+          <Button
+            size="large"
+            disabled={isPending}
+            type="primary"
+            htmlType="submit"
+            className="CryptoInput_class"
+          >
+            {isPending ? 'Confirming...' : 'Send'}
+          </Button>
+
+          {hash && (
+            <div>
+              Transaction Hash:
+              <Address
+                ellipsis={{
+                  headClip: 8,
+                  tailClip: 6,
+                }}
+                copyable
+                address={hash}
+              />
+            </div>
+          )}
+          {isConfirming && <div>Waiting for confirmation...</div>}
+          {isConfirmed && <div>Transaction confirmed.</div>}
+          {error && (
+            <div>
+              Error: {(error as BaseError).shortMessage || error.message}
+            </div>
+          )}
         </Form.Item>
       </Form>
-
-      {/* <form onSubmit={submit}>
-        <input name="address" placeholder="0xA0Cf…251e" required />
-        <input name="value" placeholder="0.05" required />
-        <button disabled={isPending} type="submit">
-          {isPending ? 'Confirming...' : 'Send'}
-        </button>
-        {hash && <div>Transaction Hash: {hash}</div>}
-        {isConfirming && <div>Waiting for confirmation...</div>}
-        {isConfirmed && <div>Transaction confirmed.</div>}
-        {error && (
-          <div>Error: {(error as BaseError).shortMessage || error.message}</div>
-        )}
-      </form> */}
     </>
   );
 }
