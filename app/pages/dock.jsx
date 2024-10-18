@@ -33,7 +33,7 @@ export function ScrollBasedVelocityDemo() {
     <VelocityScroll
       text="Velocity Scroll"
       default_velocity={5}
-      className="nav_header_text font-display text-1xl l text-center font-bold tracking-[-0.02em] text-black drop-shadow-sm dark:text-white md:leading-[0.5rem]"
+      className="nav_header_text font-display text-1xl l z-10 text-center font-bold tracking-[-0.02em] text-black drop-shadow-sm dark:text-white md:leading-[0.5rem]"
     />
   );
 }
@@ -41,7 +41,7 @@ function Navbar({ className }) {
   const [active, setActive] = useState(null);
   return (
     <div className={cn('fixed inset-x-0 top-10 z-50 mx-auto', className)}>
-      <div className="header_box">
+      <div className="header_box z-50">
         <Menu setActive={setActive}>
           <MenuItem setActive={setActive} active={active} item="NTF">
             <div className="flex flex-col space-y-4 text-sm">
