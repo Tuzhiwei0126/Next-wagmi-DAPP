@@ -1,3 +1,5 @@
+'use client';
+
 import { SwapOutlined } from '@ant-design/icons';
 import {
   CryptoInput,

@@ -1,113 +1,172 @@
-import { SwapOutlined } from '@ant-design/icons';
-import {
-  CryptoInput,
-  type CryptoInputProps,
-  type Token,
-} from '@ant-design/web3';
-import { ETH, USDT } from '@ant-design/web3-assets/tokens';
-import { Button, Flex } from 'antd';
-import Decimal from 'decimal.js';
-import React, { useState } from 'react';
+'use client';
+import { Button, Space, Splitter, Table, Tag } from 'antd';
+import { useRef } from 'react';
+import AddModal from './AddModal';
 
-const App: React.FC = () => {
-  const [cryptoPair, setCryptoPair] = useState<CryptoInputProps['value'][]>([]);
-  const [tokenBalances, setTokenBalances] = useState<
-    CryptoInputProps['balance'][]
-  >([]);
+interface DataType {
+  key: string;
+  name: string;
+  age: number;
+  address: string;
+  tags: string[];
+}
 
-  const handleQueryCrypto = async (crptoIndex: number, token?: Token) => {
-    const newTokenBalances = [...tokenBalances];
-    if (!token) {
-      newTokenBalances[crptoIndex] = undefined;
+const columns = [
+  {
+    title: 'Token',
+    dataIndex: 'key',
+    key: 'name',
+    render: (text) => <a>{text}</a>,
+  },
+  {
+    title: 'Fee tier',
+    dataIndex: 'name',
+    key: 'Fee',
+  },
+  {
+    title: 'Set price range',
+    dataIndex: 'priceRange',
+    key: 'priceRange',
+  },
+  {
+    title: 'Current price',
+    dataIndex: 'age',
+    key: 'priceCurrent',
+  },
+  {
+    title: 'Liquidity',
+    dataIndex: 'address',
+    key: 'Liquidity',
+  },
+  {
+    title: 'Tags',
+    key: 'tags',
+    dataIndex: 'tags',
+    render: (_, { tags }) => (
+      <>
+        {tags.map((tag) => {
+          let color = tag.length > 5 ? 'geekblue' : 'green';
+          if (tag === 'loser') {
+            color = 'volcano';
+          }
+          return (
+            <Tag color={color} key={tag}>
+              {tag.toUpperCase()}
+            </Tag>
+          );
+        })}
+      </>
+    ),
+  },
+  {
+    title: 'Action',
+    key: 'action',
+    render: (_, record) => (
+      <Space size="middle">
+        <a>Remove </a>
+        <a>Collect</a>
+      </Space>
+    ),
+  },
+];
 
-      return setTokenBalances(newTokenBalances);
-    }
+const data: DataType[] = [
+  {
+    key: '1',
+    name: 'John Brown',
+    age: 32,
+    address: 'New York No. 1 Lake Park',
+    tags: ['nice', 'developer'],
+  },
+  {
+    key: '2',
+    name: 'Jim Green',
+    age: 42,
+    address: 'London No. 1 Lake Park',
+    tags: ['loser'],
+  },
+  {
+    key: '3',
+    name: 'Joe Black',
+    age: 32,
+    address: 'Sydney No. 1 Lake Park',
+    tags: ['cool', 'teacher'],
+  },
+  {
+    key: '5',
+    name: 'Jim Green',
+    age: 42,
+    address: 'London No. 1 Lake Park',
+    tags: ['loser'],
+  },
+  {
+    key: '7',
+    name: 'Joe Black',
+    age: 32,
+    address: 'Sydney No. 1 Lake Park',
+    tags: ['cool', 'teacher'],
+  },
+  {
+    key: '88',
+    name: 'Jim Green',
+    age: 42,
+    address: 'London No. 1 Lake Park',
+    tags: ['loser'],
+  },
+  {
+    key: '656',
+    name: 'Joe Black',
+    age: 32,
+    address: 'Sydney No. 1 Lake Park',
+    tags: ['cool', 'teacher'],
+  },
+];
 
-    // mock query token balance
-    console.log(
-      'Decimal.pow(10, token.decimal)',
-      Decimal.pow(10, token.decimal).toFixed()
-    );
-
-    setTimeout(() => {
-      newTokenBalances[crptoIndex] = {
-        amount: BigInt(
-          new Decimal(1000).times(Decimal.pow(10, token.decimal)).toFixed()
-        ),
-        unit: '$',
-        price: token.name.includes('USD') ? 0.99 : 3984.57,
-      };
-
-      setTokenBalances(newTokenBalances);
-    }, 500);
+const App = () => {
+  const childrenRef = useRef();
+  //   console.log(, 'childrenRef');
+  //   childrenRef?.current?.setOpen(true);
+  //   const { setOpen, open } = childrenRef?.current || {};
+  //onClick={ childrenRef?.current?.setOpen(true)}
+  const test = () => {
+    childrenRef?.current?.setOpen(true);
   };
-
+  const toggleButton = (
+    <Button type="primary" onClick={test}>
+      Add
+    </Button>
+  );
   return (
-    <Flex vertical align="center" style={{ width: 456 }} gap={16}>
-      <CryptoInput
-        header={'Sell'}
-        value={cryptoPair[0]}
-        balance={tokenBalances[0]}
-        onChange={(crypto) => {
-          setCryptoPair([crypto, cryptoPair[1]]);
-
-          if (crypto?.token?.symbol !== cryptoPair?.[0]?.token?.symbol) {
-            handleQueryCrypto(0, crypto?.token);
-          }
-        }}
-        options={[ETH, USDT]}
-      />
-      <span
-        style={{
-          width: 30,
-          height: 30,
-          background: '#fff',
-          border: '1px solid #d9d9d9',
-          borderRadius: 8,
-          marginBlock: -24,
-          zIndex: 2,
-          textAlign: 'center',
-          cursor: 'pointer',
-          boxShadow: '0 2px 4px 0 rgba(0, 0, 0, 0.1)',
-        }}
-        onClick={() => {
-          setCryptoPair([cryptoPair[1], cryptoPair[0]]);
-
-          setTokenBalances([tokenBalances[1], tokenBalances[0]]);
-        }}
-      >
-        <SwapOutlined
-          style={{
-            fontSize: 18,
-            transform: 'rotate(90deg)',
-            marginBlockStart: 6,
-          }}
-        />
-      </span>
-      <CryptoInput
-        header={'Buy'}
-        value={cryptoPair[1]}
-        balance={tokenBalances[1]}
-        onChange={(crypto) => {
-          setCryptoPair([cryptoPair[0], crypto]);
-
-          if (crypto?.token?.symbol !== cryptoPair?.[1]?.token?.symbol) {
-            handleQueryCrypto(1, crypto?.token);
-          }
-        }}
-        options={[ETH, USDT]}
-      />
-      <Button
-        type="primary"
-        size="large"
-        style={{ width: '100%' }}
-        onClick={() => {
-          console.log('current crypto pair:', cryptoPair);
-        }}
-      >
-        Swap
-      </Button>
-    </Flex>
+    <>
+      <div className="h-4/5 w-full pt-20">
+        <div className="px-20">
+          <Splitter style={{ boxShadow: '0 0 10px rgba(0, 0, 0, 0.1)' }}>
+            <Splitter.Panel defaultSize="50%" min="30%" max="60%">
+              <div>
+                pool
+                <Table<DataType>
+                  key="index"
+                  class="h-full"
+                  columns={columns.slice(0, 6)}
+                  dataSource={data}
+                />
+              </div>
+            </Splitter.Panel>
+            <Splitter.Panel>
+              <div>
+                {data.length ? toggleButton : null}
+                <Table<DataType>
+                  key="index"
+                  columns={columns}
+                  dataSource={data}
+                />
+              </div>
+            </Splitter.Panel>
+          </Splitter>
+        </div>
+      </div>
+      <AddModal ref={childrenRef} />
+    </>
   );
 };
 
