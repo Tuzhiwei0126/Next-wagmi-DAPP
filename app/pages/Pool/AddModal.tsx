@@ -33,7 +33,7 @@ const App = (props, ref) => {
     };
   }, [open]);
   const [form] = Form.useForm();
-  const onChange: InputNumberProps['onChange'] = (value) => {
+  const onChange = (value) => {
     console.log('changed', value);
   };
   return (

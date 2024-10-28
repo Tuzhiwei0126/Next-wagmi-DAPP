@@ -1,14 +1,14 @@
-import { loadFixture } from "@nomicfoundation/hardhat-toolbox-viem/network-helpers";
-import { expect } from "chai";
-import hre from "hardhat";
-import { TickMath, encodeSqrtRatioX96 } from "@uniswap/v3-sdk";
+import { loadFixture } from '@nomicfoundation/hardhat-toolbox-viem/network-helpers';
+import { TickMath, encodeSqrtRatioX96 } from '@uniswap/v3-sdk';
+import { expect } from 'chai';
+import hre from 'hardhat';
 
-describe("PositionManager", function () {
+describe('PositionManager', function () {
   async function deployFixture() {
     // 初始化一个池子，价格上限是 40000，下限是 1，初始化价格是 10000，费率是 0.3%
-    const poolManager = await hre.viem.deployContract("PoolManager");
-    const tokenA = await hre.viem.deployContract("TestToken");
-    const tokenB = await hre.viem.deployContract("TestToken");
+    const poolManager = await hre.viem.deployContract('PoolManager');
+    const tokenA = await hre.viem.deployContract('TestToken');
+    const tokenB = await hre.viem.deployContract('TestToken');
     const tickLower = TickMath.getTickAtSqrtRatio(encodeSqrtRatioX96(1, 1));
     const tickUpper = TickMath.getTickAtSqrtRatio(encodeSqrtRatioX96(40000, 1));
     const fee = 3000;
@@ -28,10 +28,10 @@ describe("PositionManager", function () {
     ]);
 
     const createEvents = await poolManager.getEvents.PoolCreated();
-    const poolAddress: `0x${string}` = createEvents[0].args.pool || "0x";
-    const pool = await hre.viem.getContractAt("Pool" as string, poolAddress);
+    const poolAddress: `0x${string}` = createEvents[0].args.pool || '0x';
+    const pool = await hre.viem.getContractAt('Pool' as string, poolAddress);
 
-    const manager = await hre.viem.deployContract("PositionManager", [
+    const manager = await hre.viem.deployContract('PositionManager', [
       poolManager.address,
     ]);
     const publicClient = await hre.viem.getPublicClient();
@@ -46,12 +46,12 @@ describe("PositionManager", function () {
     };
   }
 
-  it("mint && burn && collect", async function () {
-    const { manager, sender, token0, token1, pool } = await loadFixture(
-      deployFixture
-    );
+  it('mint && burn && collect', async function () {
+    const { manager, sender, token0, token1, pool } =
+      await loadFixture(deployFixture);
 
     // 先给 sender 打钱
+    //@ts-ignore
     const initBalanceValue = 1000n * 10n ** 18n;
     await token0.write.mint([sender, initBalanceValue]);
     await token1.write.mint([sender, initBalanceValue]);
@@ -95,10 +95,9 @@ describe("PositionManager", function () {
     );
   });
 
-  it("collet with fee", async function () {
-    const { pool, token0, token1, manager, sender } = await loadFixture(
-      deployFixture
-    );
+  it('collet with fee', async function () {
+    const { pool, token0, token1, manager, sender } =
+      await loadFixture(deployFixture);
 
     const initBalanceValue = 100000000000n * 10n ** 18n;
     await token0.write.mint([sender, initBalanceValue]);
@@ -135,7 +134,7 @@ describe("PositionManager", function () {
     ]);
 
     // 通过 TestSwap 合约交易
-    const testSwap = await hre.viem.deployContract("TestSwap");
+    const testSwap = await hre.viem.deployContract('TestSwap');
     const minPrice = 1000;
     const minSqrtPriceX96: bigint = BigInt(
       encodeSqrtRatioX96(minPrice, 1).toString()

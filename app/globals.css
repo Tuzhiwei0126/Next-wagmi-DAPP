@@ -100,7 +100,7 @@ body {
 .header_box {
   display: flex;
   justify-content: space-between;
-  padding: 0 5rem;
+  padding: 0 5rem 0 0;
 }
 .next_ntf_box {
   top: 100px;

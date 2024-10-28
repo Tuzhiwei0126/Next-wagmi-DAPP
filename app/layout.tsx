@@ -21,7 +21,6 @@ import {
 } from '@ant-design/web3-wagmi';
 // import { parseEther } from "viem"
 import { AntdRegistry } from '@ant-design/nextjs-registry';
-import { getAccount } from '@wagmi/core';
 import { config } from './config';
 
 const geistSans = localFont({
@@ -34,8 +33,7 @@ const geistMono = localFont({
   variable: '--font-geist-mono',
   weight: '100 900',
 });
-const account = getAccount(config);
-console.log(account, 'accountaccount');
+
 const queryClient = new QueryClient();
 
 export default function RootLayout({

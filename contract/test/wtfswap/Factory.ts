@@ -1,10 +1,10 @@
-import { loadFixture } from "@nomicfoundation/hardhat-toolbox-viem/network-helpers";
-import { expect } from "chai";
-import hre from "hardhat";
+import { loadFixture } from '@nomicfoundation/hardhat-toolbox-viem/network-helpers';
+import { expect } from 'chai';
+import hre from 'hardhat';
 
-describe("Factory", function () {
+describe('Factory', function () {
   async function deployFixture() {
-    const factory = await hre.viem.deployContract("Factory");
+    const factory = await hre.viem.deployContract('Factory');
     const publicClient = await hre.viem.getPublicClient();
     return {
       factory,
@@ -12,10 +12,10 @@ describe("Factory", function () {
     };
   }
 
-  it("createPool", async function () {
+  it('createPool', async function () {
     const { factory, publicClient } = await loadFixture(deployFixture);
-    const tokenA: `0x${string}` = "0xEcd0D12E21805803f70de03B72B1C162dB0898d9";
-    const tokenB: `0x${string}` = "0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984";
+    const tokenA: `0x${string}` = '0xEcd0D12E21805803f70de03B72B1C162dB0898d9';
+    const tokenB: `0x${string}` = '0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984';
 
     const hash = await factory.write.createPool([
       tokenA,
@@ -46,16 +46,17 @@ describe("Factory", function () {
     expect(poolAddress.result).to.equal(createEvents[0].args.pool);
   });
 
-  it("createPool with same token", async function () {
+  it('createPool with same token', async function () {
     const { factory } = await loadFixture(deployFixture);
-    const tokenA: `0x${string}` = "0xEcd0D12E21805803f70de03B72B1C162dB0898d9";
-    const tokenB: `0x${string}` = "0xEcd0D12E21805803f70de03B72B1C162dB0898d9";
+    const tokenA: `0x${string}` = '0xEcd0D12E21805803f70de03B72B1C162dB0898d9';
+    const tokenB: `0x${string}` = '0xEcd0D12E21805803f70de03B72B1C162dB0898d9';
     await expect(
       factory.write.createPool([tokenA, tokenB, 1, 100000, 3000])
-    ).to.be.rejectedWith("IDENTICAL_ADDRESSES");
-
+      //@ts-ignore
+    ).to.be.rejectedWith('IDENTICAL_ADDRESSES');
+    //@ts-ignore
     await expect(factory.read.getPool([tokenA, tokenB, 3])).to.be.rejectedWith(
-      "IDENTICAL_ADDRESSES"
+      'IDENTICAL_ADDRESSES'
     );
   });
 });

@@ -65,6 +65,7 @@ const AddressInput = (props) => {
   );
 };
 const AmountInput = (props) => {
+  // @ts-ignore
   const account = getAccount(config);
   const balance = useBalance({
     address: account.address,
@@ -86,7 +87,8 @@ const AmountInput = (props) => {
       .then((response) => {
         console.log(response.data, '  response.data;');
         setTokenBalance({
-          amount: balance?.data?.value,
+          // @ts-ignore
+          amount: balance?.data?.value as bigint,
           unit: '$',
           price: response?.data?.price,
         });
@@ -96,7 +98,7 @@ const AmountInput = (props) => {
   const [crypto, setCrypto] = useState<CryptoInputProps['value']>({
     token: ETH,
     inputString: '',
-    amount: null,
+    amount: undefined,
   });
 
   useEffect(() => {
@@ -165,9 +167,9 @@ export function SendTransaction() {
   const onFinish = (values) => {
     const to = '0xF663331cDBA5585CDd0191da5F85b7c490C47304';
     const value = values.crypto.crypto;
-    sendTransaction({ to, values: parseEther('11') });
+    sendTransaction({ to, value: parseEther(value) });
     console.log(values, 122);
-    console.log('Received values from form: ', values);
+    console.log('Received values from form: ', value);
   };
   const [form] = Form.useForm();
   useEffect(() => {}, []);

@@ -129,6 +129,7 @@ const App = () => {
   //   const { setOpen, open } = childrenRef?.current || {};
   //onClick={ childrenRef?.current?.setOpen(true)}
   const test = () => {
+    //@ts-ignore
     childrenRef?.current?.setOpen(true);
   };
   const toggleButton = (

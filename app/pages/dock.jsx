@@ -47,8 +47,17 @@ function Navbar({ className }) {
   const [active, setActive] = useState(null);
   return (
     <>
-      <div className={cn('fixed inset-x-0 top-10 z-50 mx-auto', className)}>
+      <div
+        className={cn('fixed inset-x-0 top-10 z-50 mx-auto', className)}
+        onMouseLeave={() => setActive(null)}
+      >
         <div className="header_box z-50">
+          <a
+            href="/"
+            className="relative flex cursor-pointer justify-center space-x-8 border border-transparent bg-white px-8 py-6 shadow-input dark:border-white/[0.2] dark:bg-black"
+          >
+            Home
+          </a>
           <Menu setActive={setActive}>
             <MenuItem setActive={setActive} active={active} item="NTF">
               <div className="flex flex-col space-y-4 text-sm">
@@ -62,7 +71,7 @@ function Navbar({ className }) {
             </MenuItem>
             <MenuItem setActive={setActive} active={active} item="工具库">
               <div className="flex flex-col space-y-4 text-sm">
-                <HoveredLink href="/hobby">转账</HoveredLink>
+                <HoveredLink href="/pages">转账</HoveredLink>
                 <HoveredLink href="/individual">批量转账</HoveredLink>
                 <HoveredLink href="/team">批量归集</HoveredLink>
                 <HoveredLink href="/enterprise"></HoveredLink>
@@ -109,7 +118,7 @@ function Navbar({ className }) {
       item="swap"
     ></MenuItem> */}
           </Menu>
-          <div className="header_wallet">
+          <div className="header_wallet ml-auto">
             <ConnectWallet />
           </div>
         </div>

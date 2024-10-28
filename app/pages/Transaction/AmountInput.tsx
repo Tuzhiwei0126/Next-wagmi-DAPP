@@ -9,6 +9,7 @@ const USDT_CONTRACT = '0xdAC17F958D2ee523a2206206994597C13D831ec7';
 
 const ETH_CONTRACT = '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2';
 const AmountInput = (props) => {
+  // @ts-ignore
   const account = getAccount(config);
   const balance = useBalance({
     address: account.address,
@@ -30,7 +31,8 @@ const AmountInput = (props) => {
       .then((response) => {
         console.log(response.data, '  response.data;');
         setTokenBalance({
-          amount: balance?.data?.value,
+          // @ts-ignore
+          amount: balance?.data?.value as bigint,
           unit: '$',
           price: response?.data?.price,
         });
@@ -40,7 +42,7 @@ const AmountInput = (props) => {
   const [crypto, setCrypto] = useState<CryptoInputProps['value']>({
     token: ETH,
     inputString: '',
-    amount: null,
+    amount: undefined,
   });
 
   useEffect(() => {
