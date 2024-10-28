@@ -1,4 +1,5 @@
 'use client';
+import { MoreOne } from '@icon-park/react';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -28,9 +29,15 @@ export const MenuItem = ({
     <div onMouseEnter={() => setActive(item)} className="relative">
       <motion.p
         transition={{ duration: 0.3 }}
-        className="cursor-pointer text-black hover:opacity-[0.9] dark:text-white"
+        className="flex cursor-pointer items-center text-black hover:opacity-[0.9] dark:text-white"
       >
         {item}
+        <MoreOne
+          className="mx-1 items-center"
+          theme="outline"
+          size="20"
+          fill="#333"
+        />
       </motion.p>
       {active !== null && (
         <motion.div
@@ -124,7 +131,7 @@ export const ClickLink = ({ children, ...rest }: any) => {
   return (
     <Link
       {...rest}
-      className="click:text-black text-neutral-700 dark:text-neutral-200"
+      className="click:text-black flex text-neutral-700 dark:text-neutral-200"
     >
       {children}
     </Link>

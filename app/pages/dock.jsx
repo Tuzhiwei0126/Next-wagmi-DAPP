@@ -1,6 +1,5 @@
 'use client';
 import { useState } from 'react';
-import { useAccount } from 'wagmi';
 import { BorderBeam } from '../../components/ui/border-beam';
 import {
   ClickLink,
@@ -8,11 +7,12 @@ import {
   Menu,
   MenuItem,
 } from '../../components/ui/navbar-menu';
+
+import { ExperimentOne, Frog } from '@icon-park/react';
 import { VelocityScroll } from '../../components/ui/scroll-based-velocity';
 import { cn } from '../../lib/utils';
 import ConnectCom from '../pages/wallet/clientWallet';
 function ConnectWallet() {
-  const { isConnected } = useAccount();
   // console.log(isConnected, "isConnected");
   // if (isConnected) return <Account />;
   return <ConnectCom />;
@@ -45,6 +45,7 @@ export function ScrollBasedVelocityDemo() {
 }
 function Navbar({ className }) {
   const [active, setActive] = useState(null);
+
   return (
     <>
       <div
@@ -56,7 +57,7 @@ function Navbar({ className }) {
             href="/"
             className="relative flex cursor-pointer justify-center space-x-8 border border-transparent bg-white px-8 py-6 shadow-input dark:border-white/[0.2] dark:bg-black"
           >
-            Home
+            <Frog theme="two-tone" size="28" fill={['#333', '#7ed321']} />
           </a>
           <Menu setActive={setActive}>
             <MenuItem setActive={setActive} active={active} item="NTF">
@@ -109,8 +110,22 @@ function Navbar({ className }) {
                 <HoveredLink href="/enterprise">Enterprise</HoveredLink>
               </div>
             </MenuItem>
-            <ClickLink href="/pages/Hobby">Swap</ClickLink>
-            <ClickLink href="/pages/Pool">Pool</ClickLink>
+            <ClickLink href="/pages/Hobby">
+              Swap
+              <ExperimentOne
+                theme="two-tone"
+                size="24"
+                fill={['#333', '#7ed321']}
+              />
+            </ClickLink>
+            <ClickLink href="/pages/Pool">
+              Pool
+              <ExperimentOne
+                theme="two-tone"
+                size="24"
+                fill={['#333', '#7ed321']}
+              />
+            </ClickLink>
             {/* <MenuItem
       setActive={setActive}
       active={active}

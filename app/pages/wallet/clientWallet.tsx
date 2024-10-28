@@ -117,7 +117,7 @@ const ConnectCom: React.FC = () => {
           }}
           supportedChains={[{ chain: Mainnet }, { chain: BSC }]}
           token={USDT}
-          amount={parseUnits('3', USDT.decimal)}
+          amount={parseUnits('10', USDT.decimal)}
           wallets={[metadata_MetaMask, metadata_imToken, metadata_TokenPocket]}
           onFinish={() => {
             hideModal();
