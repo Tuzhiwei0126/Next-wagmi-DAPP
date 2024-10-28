@@ -1,8 +1,9 @@
 'use client';
+
+import { BackgroundLines } from '@/components/ui/background-lines';
 import { Button, Space, Splitter, Table, Tag } from 'antd';
 import { useRef } from 'react';
 import AddModal from './AddModal';
-
 interface DataType {
   key: string;
   name: string;
@@ -139,33 +140,36 @@ const App = () => {
   );
   return (
     <>
-      <div className="h-4/5 w-full pt-20">
-        <div className="px-20">
-          <Splitter style={{ boxShadow: '0 0 10px rgba(0, 0, 0, 0.1)' }}>
-            <Splitter.Panel defaultSize="50%" min="30%" max="60%">
-              <div>
-                pool
-                <Table<DataType>
-                  key="index"
-                  class="h-full"
-                  columns={columns.slice(0, 6)}
-                  dataSource={data}
-                />
-              </div>
-            </Splitter.Panel>
-            <Splitter.Panel>
-              <div>
-                {data.length ? toggleButton : null}
-                <Table<DataType>
-                  key="index"
-                  columns={columns}
-                  dataSource={data}
-                />
-              </div>
-            </Splitter.Panel>
-          </Splitter>
+      <BackgroundLines className="flex w-full flex-col items-center justify-center px-4">
+        <div className="h-4/5 w-full pt-20">
+          <div className="px-20">
+            <Splitter style={{ boxShadow: '0 0 10px rgba(0, 0, 0, 0.1)' }}>
+              <Splitter.Panel defaultSize="50%" min="30%" max="60%">
+                <div>
+                  pool
+                  <Table<DataType>
+                    key="index"
+                    class="h-full"
+                    columns={columns.slice(0, 6)}
+                    dataSource={data}
+                  />
+                </div>
+              </Splitter.Panel>
+              <Splitter.Panel>
+                <div>
+                  {data.length ? toggleButton : null}
+                  <Table<DataType>
+                    key="index"
+                    columns={columns}
+                    dataSource={data}
+                  />
+                </div>
+              </Splitter.Panel>
+            </Splitter>
+          </div>
         </div>
-      </div>
+      </BackgroundLines>
+
       <AddModal ref={childrenRef} />
     </>
   );
