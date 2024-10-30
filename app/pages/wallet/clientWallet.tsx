@@ -127,6 +127,9 @@ const ConnectCom: React.FC = () => {
       </Modal>
 
       <div>
+        <RainbowButton className="play_button" onClick={showModal}>
+          PayPanel
+        </RainbowButton>
         {account?.address && (
           <Button
             loading={signLoading}
@@ -136,9 +139,6 @@ const ConnectCom: React.FC = () => {
             签名验证
           </Button>
         )}
-        <RainbowButton className="play_button" onClick={showModal}>
-          PayPanel
-        </RainbowButton>
       </div>
       <div className="pice_gas">
         <HyperText
