@@ -1,13 +1,9 @@
 'use client';
 
 import { BackgroundLines } from '@/components/ui/background-lines';
-import {
-  poolManagerAbi,
-  useReadPoolManagerGetAllPools,
-} from '@/utils/generated';
+import { useReadPoolManagerGetAllPools } from '@/utils/generated';
 import { Button, Space, Splitter, Table, Tag } from 'antd';
 import { useRef } from 'react';
-import { useWriteContract } from 'wagmi';
 import AddModal from './AddModal';
 interface DataType {
   key: string;
@@ -127,19 +123,9 @@ const data: DataType[] = [
     tags: ['cool', 'teacher'],
   },
 ];
-const tokenA: `0x${string}` = '0xEcd0D12E21805803f70de03B72B1C162dB0898d9';
-const tokenB: `0x${string}` = '0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984';
-const data11 = {
-  token0: tokenA,
-  token1: tokenB,
-  tickLower: 1,
-  tickUpper: 30000,
-  fee: 3000,
-  sqrtPriceX96: 10n,
-};
+
 const App = () => {
   const childrenRef = useRef();
-  const { writeContract } = useWriteContract();
 
   //   console.log(, 'childrenRef');
   //   childrenRef?.current?.setOpen(true);
@@ -147,23 +133,7 @@ const App = () => {
   //onClick={ childrenRef?.current?.setOpen(true)}
   const test = () => {
     //@ts-ignore
-    // childrenRef?.current?.setOpen(true);
-    const res = writeContract({
-      abi: poolManagerAbi,
-      address: '0x5FbDB2315678afecb367f032d93F642f64180aa3',
-      functionName: 'createAndInitializePoolIfNecessary',
-      args: [
-        {
-          tokenA: tokenA,
-          tokenB: tokenB,
-          fee: 3000,
-          tickLower: 1,
-          tickUpper: 3000,
-          sqrtPriceX96: BigInt('100000000'),
-        },
-      ],
-    });
-    console.log(res, 'resres');
+    childrenRef?.current?.setOpen(true);
   };
   const toggleButton = (
     <Button type="primary" onClick={test}>
