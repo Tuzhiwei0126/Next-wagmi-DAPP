@@ -10,7 +10,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "generate": "pnpm wagmi generate"
+    "generate": "npx wagmi generate"
   },
   "dependencies": {
     "@ant-design/nextjs-registry": "^1.0.1",

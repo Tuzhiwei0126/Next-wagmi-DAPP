@@ -1,20 +1,39 @@
-import { Button, Form, Modal } from 'antd';
-
-import { InputNumber, Slider } from 'antd';
+import { poolManagerAbi } from '@/utils/generated';
+import { Button, Form, InputNumber, Modal, Slider } from 'antd';
 import React, { useImperativeHandle, useState } from 'react';
+import { useWriteContract } from 'wagmi';
 import AmountInput from '../Transaction/AmountInput';
 
-const App = (props, ref) => {
+const AddModal = (props, ref) => {
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
-
+  const { writeContract } = useWriteContract();
   const handleOk = () => {
-    form.submit();
-    setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
-      setOpen(false);
-    }, 3000);
+    console.log(form, 'formform');
+    const tokenA: `0x${string}` = '0xEcd0D12E21805803f70de03B72B1C162dB0898d9';
+    const tokenB: `0x${string}` = '0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984';
+    const data = {
+      token0: tokenA,
+      token1: tokenB,
+      tickLower: 1,
+      tickUpper: 30000,
+      fee: 3000,
+      // sqrtPriceX96: 10000,
+    };
+    const res = writeContract({
+      abi: poolManagerAbi,
+      address: '0x5FbDB2315678afecb367f032d93F642f64180aa3',
+      functionName: 'createAndInitializePoolIfNecessary',
+      args: [data],
+    });
+    console.log(res, 'resres');
+
+    // form.submit();
+    // setLoading(true);
+    // setTimeout(() => {
+    //   setLoading(false);
+    //   setOpen(false);
+    // }, 3000);
   };
 
   type FieldType = {
@@ -140,4 +159,4 @@ const App = (props, ref) => {
   );
 };
 
-export default React.forwardRef(App);
+export default React.forwardRef(AddModal);
