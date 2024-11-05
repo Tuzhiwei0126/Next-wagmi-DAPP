@@ -9,7 +9,7 @@ const AddModal = (props, ref) => {
   const [open, setOpen] = useState(false);
   const { writeContract } = useWriteContract();
   const handleOk = async () => {
-    console.log(form, 'formform');
+    console.log(form.getFieldsValue(), 'formform');
     const tokenA: `0x${string}` = '0xEcd0D12E21805803f70de03B72B1C162dB0898d9';
     const tokenB: `0x${string}` = '0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984';
 
@@ -89,24 +89,24 @@ const AddModal = (props, ref) => {
           autoComplete="off"
         >
           <Form.Item<FieldType>
-            label="Username"
-            name="username"
-            rules={[{ required: true, message: 'Please input your username!' }]}
+            label="Token"
+            name="TokenA"
+            rules={[{ required: true, message: 'Please input from Token!' }]}
           >
             <AmountInput />
           </Form.Item>
 
           <Form.Item<FieldType>
             label=""
-            name="password"
-            rules={[{ required: true, message: 'Please input your password!' }]}
+            name="TokenB"
+            rules={[{ required: true, message: 'Please input to Token!' }]}
           >
             <AmountInput />
           </Form.Item>
 
           <Form.Item<FieldType>
             label="Fee tier"
-            name="password"
+            name="Fee"
             rules={[{ required: true, message: 'Please input your password!' }]}
           >
             <InputNumber<number>
@@ -119,40 +119,62 @@ const AddModal = (props, ref) => {
               //   onChange={onChange}
             />
           </Form.Item>
-          <Form.Item<FieldType>
+          <Form.Item
             label="Set price range"
-            name="password"
-            rules={[{ required: true, message: 'Please input your password!' }]}
+            required
+            style={{ marginBottom: 0 }}
           >
-            <InputNumber
-              min={1}
-              max={10}
-              style={{ width: '45%', marginRight: '10%' }}
-              defaultValue={3}
-              placeholder="low Price"
-              onChange={onChange}
-            />
-            <InputNumber
-              min={1}
-              max={10}
-              placeholder="high Price"
-              defaultValue={3}
-              style={{ width: '45%' }}
-              onChange={onChange}
-            />
+            <Form.Item
+              name="LowPrice"
+              rules={[{ required: true }]}
+              style={{
+                display: 'inline-block',
+                width: 'calc(50%)',
+              }}
+            >
+              <InputNumber
+                min={1}
+                max={10}
+                style={{ width: '90%', marginRight: '20%' }}
+                defaultValue={3}
+                placeholder="low Price"
+              />
+            </Form.Item>
+            <Form.Item
+              name="UpPrice"
+              rules={[{ required: true }]}
+              style={{
+                display: 'inline-block',
+                width: 'calc(50%)',
+              }}
+            >
+              <InputNumber
+                min={1}
+                max={10}
+                placeholder="high Price"
+                defaultValue={3}
+                style={{ width: '100%' }}
+              />
+            </Form.Item>
           </Form.Item>
+
           <Form.Item<FieldType>
             label="Current price"
-            name="password"
-            rules={[{ required: true, message: 'Please input your password!' }]}
+            name="CurrentPrice"
+            rules={[{ required: true, message: 'Please input CurrentPrice!' }]}
           >
             <InputNumber
               min={1}
               style={{ width: '100%' }}
               max={10}
               defaultValue={3}
-              onChange={onChange}
             />
+          </Form.Item>
+          <Form.Item<FieldType>
+            label=""
+            name="CurrentPriceSlider"
+            rules={[{ required: true, message: 'Please input CurrentPrice!' }]}
+          >
             <Slider />
           </Form.Item>
         </Form>

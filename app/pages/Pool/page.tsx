@@ -2,64 +2,68 @@
 
 import { BackgroundLines } from '@/components/ui/background-lines';
 import { useReadPoolManagerGetAllPools } from '@/utils/generated';
-import { Button, Space, Splitter, Table, Tag } from 'antd';
-import { useRef } from 'react';
+import { Button, Space, Splitter, Table } from 'antd';
+import { useEffect, useRef, useState } from 'react';
 import AddModal from './AddModal';
-interface DataType {
-  key: string;
-  name: string;
-  age: number;
-  address: string;
-  tags: string[];
-}
 
 const columns = [
   {
-    title: 'Token',
-    dataIndex: 'key',
-    key: 'name',
+    title: 'TokenA',
+    dataIndex: 'token0',
+    key: 'token0',
+    render: (text) => <a>{text}</a>,
+  },
+  {
+    title: 'TokenB',
+    dataIndex: 'token1',
+    key: 'token1',
     render: (text) => <a>{text}</a>,
   },
   {
     title: 'Fee tier',
-    dataIndex: 'name',
-    key: 'Fee',
+    dataIndex: 'fee',
+    key: 'fee',
   },
   {
     title: 'Set price range',
-    dataIndex: 'priceRange',
-    key: 'priceRange',
+    dataIndex: 'tickUpper',
+    key: 'tickUpper',
+  },
+  {
+    title: 'Set price range',
+    dataIndex: 'tickLower',
+    key: 'tickLower',
   },
   {
     title: 'Current price',
-    dataIndex: 'age',
-    key: 'priceCurrent',
+    dataIndex: 'feeProtocol',
+    key: 'feeProtocol',
   },
   {
     title: 'Liquidity',
-    dataIndex: 'address',
-    key: 'Liquidity',
+    dataIndex: 'tick',
+    key: 'tick',
   },
-  {
-    title: 'Tags',
-    key: 'tags',
-    dataIndex: 'tags',
-    render: (_, { tags }) => (
-      <>
-        {tags.map((tag) => {
-          let color = tag.length > 5 ? 'geekblue' : 'green';
-          if (tag === 'loser') {
-            color = 'volcano';
-          }
-          return (
-            <Tag color={color} key={tag}>
-              {tag.toUpperCase()}
-            </Tag>
-          );
-        })}
-      </>
-    ),
-  },
+  // {
+  //   title: 'Tags',
+  //   key: 'tags',
+  //   dataIndex: 'tags',
+  //   render: (_, { tags }) => (
+  //     <>
+  //       {tags.map((tag) => {
+  //         let color = tag.length > 5 ? 'geekblue' : 'green';
+  //         if (tag === 'loser') {
+  //           color = 'volcano';
+  //         }
+  //         return (
+  //           <Tag color={color} key={tag}>
+  //             {tag.toUpperCase()}
+  //           </Tag>
+  //         );
+  //       })}
+  //     </>
+  //   ),
+  // },
   {
     title: 'Action',
     key: 'action',
@@ -72,61 +76,43 @@ const columns = [
   },
 ];
 
-const data: DataType[] = [
-  {
-    key: '1',
-    name: 'John Brown',
-    age: 32,
-    address: 'New York No. 1 Lake Park',
-    tags: ['nice', 'developer'],
-  },
-  {
-    key: '2',
-    name: 'Jim Green',
-    age: 42,
-    address: 'London No. 1 Lake Park',
-    tags: ['loser'],
-  },
-  {
-    key: '3',
-    name: 'Joe Black',
-    age: 32,
-    address: 'Sydney No. 1 Lake Park',
-    tags: ['cool', 'teacher'],
-  },
-  {
-    key: '5',
-    name: 'Jim Green',
-    age: 42,
-    address: 'London No. 1 Lake Park',
-    tags: ['loser'],
-  },
-  {
-    key: '7',
-    name: 'Joe Black',
-    age: 32,
-    address: 'Sydney No. 1 Lake Park',
-    tags: ['cool', 'teacher'],
-  },
-  {
-    key: '88',
-    name: 'Jim Green',
-    age: 42,
-    address: 'London No. 1 Lake Park',
-    tags: ['loser'],
-  },
-  {
-    key: '656',
-    name: 'Joe Black',
-    age: 32,
-    address: 'Sydney No. 1 Lake Park',
-    tags: ['cool', 'teacher'],
-  },
-];
-
 const App = () => {
   const childrenRef = useRef();
+  const [state, SetState] = useState([]);
+  const [Loading, SetLoading] = useState(true);
+  const {
+    data: balance,
+    error,
+    isPending,
+  } = useReadPoolManagerGetAllPools({
+    address: '0x5FbDB2315678afecb367f032d93F642f64180aa3',
+  });
+  useEffect(() => {
+    if (balance) {
+      console.log(balance?.slice(0, 1), error, isPending, 112121);
+      SetState(balance);
+      SetLoading(isPending);
+    }
+  }, [balance, isPending]);
 
+  // if (balance) {
+  //   SetLoading(isPending);
+  // }
+  // //   SetState(balance?.slice(0, 1));
+  //
+  // const {
+  //   data: balance,
+  //   error,
+  //   isPending,
+  // } = useReadPoolManagerGetAllPools({
+  //   address: '0x5FbDB2315678afecb367f032d93F642f64180aa3',
+  // });
+  // if (balance) {
+  //   // SetState(balance?.slice(0, 1));
+  //   // SetLoading(isPending);
+  // }
+
+  // console.log(balance?.slice(0, 1), error, isPending, 112121);
   //   console.log(, 'childrenRef');
   //   childrenRef?.current?.setOpen(true);
   //   const { setOpen, open } = childrenRef?.current || {};
@@ -146,21 +132,6 @@ const App = () => {
     </Button>
   );
 
-  const GetPoolContract = () => {
-    const {
-      data: balance,
-      error,
-      isPending,
-    } = useReadPoolManagerGetAllPools({
-      address: '0x5FbDB2315678afecb367f032d93F642f64180aa3',
-    });
-    console.log(balance, error, isPending, 112121);
-    if (isPending) return <div>Loading...</div>;
-
-    if (error) return <div>Error: {error.shortMessage || error.message}</div>;
-
-    return <div>Balance: {balance?.toString()}</div>;
-  };
   return (
     <>
       <BackgroundLines className="flex w-full flex-col items-center justify-center px-4">
@@ -169,24 +140,26 @@ const App = () => {
             <Splitter style={{ boxShadow: '0 0 10px rgba(0, 0, 0, 0.1)' }}>
               <Splitter.Panel defaultSize="50%" min="30%" max="60%">
                 <div>
-                  {data.length ? addPool : null}
-                  <GetPoolContract />
-
-                  <Table<DataType>
+                  {addPool}
+                  {state?.length}
+                  <Table
+                    loading={Loading}
                     key="index"
                     class="h-full"
                     columns={columns.slice(0, 6)}
-                    dataSource={data}
+                    // dataSource={balance?.[0]}
+                    dataSource={state}
                   />
                 </div>
               </Splitter.Panel>
               <Splitter.Panel>
                 <div>
-                  {data.length ? toggleButton : null}
-                  <Table<DataType>
+                  {toggleButton}
+                  <Table
+                    loading={Loading}
                     key="index"
                     columns={columns}
-                    dataSource={data}
+                    dataSource={state}
                   />
                 </div>
               </Splitter.Panel>
