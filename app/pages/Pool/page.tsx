@@ -141,7 +141,6 @@ const App = () => {
               <Splitter.Panel defaultSize="50%" min="30%" max="60%">
                 <div>
                   {addPool}
-                  {state?.length}
                   <Table
                     loading={Loading}
                     key="index"

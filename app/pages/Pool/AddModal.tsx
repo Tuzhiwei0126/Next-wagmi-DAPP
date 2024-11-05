@@ -1,7 +1,7 @@
 import { poolManagerAbi } from '@/utils/generated';
 import { TickMath, encodeSqrtRatioX96 } from '@uniswap/v3-sdk';
 import { Button, Form, InputNumber, Modal, Slider } from 'antd';
-import React, { useImperativeHandle, useState } from 'react';
+import React, { useEffect, useImperativeHandle, useState } from 'react';
 import { useWriteContract } from 'wagmi';
 import AmountInput from '../Transaction/AmountInput';
 const AddModal = (props, ref) => {
@@ -57,6 +57,10 @@ const AddModal = (props, ref) => {
   const onChange = (value) => {
     console.log('changed', value);
   };
+  useEffect(() => {
+    form.resetFields();
+    console.log(form, 1);
+  }, [open]);
   return (
     <>
       <Modal
@@ -110,7 +114,6 @@ const AddModal = (props, ref) => {
             rules={[{ required: true, message: 'Please input your password!' }]}
           >
             <InputNumber<number>
-              defaultValue={100}
               min={0}
               max={100}
               style={{ width: '100%' }}
@@ -133,10 +136,8 @@ const AddModal = (props, ref) => {
               }}
             >
               <InputNumber
-                min={1}
-                max={10}
+                min={0}
                 style={{ width: '90%', marginRight: '20%' }}
-                defaultValue={3}
                 placeholder="low Price"
               />
             </Form.Item>
@@ -149,10 +150,8 @@ const AddModal = (props, ref) => {
               }}
             >
               <InputNumber
-                min={1}
-                max={10}
+                min={0}
                 placeholder="high Price"
-                defaultValue={3}
                 style={{ width: '100%' }}
               />
             </Form.Item>
@@ -163,12 +162,7 @@ const AddModal = (props, ref) => {
             name="CurrentPrice"
             rules={[{ required: true, message: 'Please input CurrentPrice!' }]}
           >
-            <InputNumber
-              min={1}
-              style={{ width: '100%' }}
-              max={10}
-              defaultValue={3}
-            />
+            <InputNumber min={1} style={{ width: '100%' }} max={10} />
           </Form.Item>
           <Form.Item<FieldType>
             label=""
