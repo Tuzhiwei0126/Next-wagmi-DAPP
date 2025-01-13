@@ -72,7 +72,7 @@ const ConnectCom: React.FC = () => {
     setSignLoading(true);
     try {
       const signature = await signMessageAsync({
-        message: 'test message for WTF-DApp demo',
+        message: 'test message for DApp demo',
       });
       await checkSignature({
         address: account?.address,

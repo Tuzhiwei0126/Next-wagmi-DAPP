@@ -58,7 +58,7 @@ const AddModal = (props, ref) => {
     console.log('changed', value);
   };
   useEffect(() => {
-    form.resetFields();
+    form?.resetFields();
     console.log(form, 1);
   }, [open]);
   return (

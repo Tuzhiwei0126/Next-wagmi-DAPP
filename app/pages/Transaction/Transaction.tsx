@@ -167,7 +167,9 @@ export function SendTransaction() {
   const onFinish = (values) => {
     const to = '0xF663331cDBA5585CDd0191da5F85b7c490C47304';
     const value = values.crypto.crypto;
-    sendTransaction({ to, value: parseEther(value) });
+    console.log(value.inputString, parseEther(value.inputString), 8888);
+
+    sendTransaction({ to, value: parseEther(value.inputString) });
     console.log(values, 122);
     console.log('Received values from form: ', value);
   };

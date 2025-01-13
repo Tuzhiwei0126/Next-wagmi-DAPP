@@ -1,6 +1,10 @@
 {
   "compilerOptions": {
-    "lib": ["dom", "dom.iterable", "esnext"],
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": false,
@@ -18,11 +22,25 @@
       }
     ],
     "paths": {
-      "@/*": ["./*"],
-      "@/*/": ["./*"]
+      "@/*": [
+        "./*"
+      ],
+      "@/*/": [
+        "./*"
+      ]
     },
-    "strictNullChecks": true
+    "strictNullChecks": true,
+    "target": "ES2017"
   },
-  "include": ["next-env.d.ts", "**/*.ts", ".next/types/**/*.ts"],
-  "exclude": ["node_modules", "app/pages", "contract", "**/*.sol"]
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    ".next/types/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "app/pages",
+    "contract",
+    "**/*.sol"
+  ]
 }
